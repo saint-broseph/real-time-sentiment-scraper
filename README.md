@@ -1,11 +1,12 @@
 🧠 **SENTILYTICS** - REAL TIME SENTIMENT TRACKER
 
-Sentilytics is a real-time sentiment analysis web app that compares Twitter and Reddit sentiment for
-any stock, company, or keyword — powered by NLP, live APIs, and beautiful interactive charts.
+Sentilytics is a real-time sentiment analysis app that pulls live data from Twitter and Reddit about 
+**anything** — stocks, people, events, trends — and visualizes public opinion in seconds.
+
 
 🔍 Features:
 
-- 🪙 Enter any stock/company/crypto keyword
+- 🪙 Enter any keyword
 - 🕊️ Live tweet sentiment from Twitter API (v2)
 - 👽 Real-time Reddit post sentiment via PRAW
 - 🧠 NLP with VADER sentiment analyzer
