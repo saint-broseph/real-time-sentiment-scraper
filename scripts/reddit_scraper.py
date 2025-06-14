@@ -16,13 +16,17 @@ def get_reddit_posts(keyword, limit=20):
     try:
         subreddits = ["stocks", "wallstreetbets", "investing"]
         results = []
-        per_sub_limit = limit // len(subreddits)
+        per_sub_limit = max(1, limit // len(subreddits))  # ensure at least 1 per subreddit
 
         for sub in subreddits:
             posts = reddit.subreddit(sub).search(keyword, sort='new', limit=per_sub_limit)
-            results.extend((post.title + " " + post.selftext, datetime.fromtimestamp(post.created_utc).replace(tzinfo=None)))
-        for post in posts
+            for post in posts:
+                text = post.title + " " + post.selftext
+                timestamp = datetime.fromtimestamp(post.created_utc).replace(tzinfo=None)
+                results.append((text, timestamp))
+
         return results
+
     except Exception as e:
         st.error("Reddit error: " + str(e))
         return []
