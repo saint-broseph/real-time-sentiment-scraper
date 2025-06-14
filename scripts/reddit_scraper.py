@@ -21,7 +21,7 @@ def get_reddit_posts(keyword, limit=20):
         for sub in subreddits:
             posts = reddit.subreddit(sub).search(keyword, sort='new', limit=per_sub_limit)
             results.extend(
-                (post.title + " " + post.selftext, datetime.fromtimestamp(post.created_utc))
+                (post.title + " " + post.selftext, datetime.fromtimestamp(post.created_utc).replace(tzinfo=None)
                 for post in posts
             )
         return results
