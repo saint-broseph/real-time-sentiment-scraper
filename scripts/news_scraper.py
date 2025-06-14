@@ -10,7 +10,7 @@ def get_news_articles(keyword, limit=20):
         response = requests.get(url)
         articles = response.json().get("articles", [])
         return [
-            (f"{a['title']} {a.get('description', '')}", datetime.fromisoformat(a['publishedAt'].replace("Z", "+00:00")))
+            (f"{a['title']} {a.get('description', '')}", datetime.fromisoformat(a['publishedAt'].replace("Z", "+00:00")).replace(tzinfo=None)
             for a in articles if a.get('title') and a.get('publishedAt')
         ]
     except Exception as e:
