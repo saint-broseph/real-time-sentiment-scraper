@@ -15,8 +15,7 @@ st.title("🧠 Sentilytics — Cross-Platform Sentiment Tracker")
 st.markdown("Track what Twitter, Reddit, and News outlets think about any topic — from stocks to trends to public figures.")
 
 # --- Keyword Input ---
-col1, col2 = st.columns([3, 1])
-with col1:
+
     keyword = st.text_input("Enter a topic, stock, person, or trend:")
 
 
