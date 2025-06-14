@@ -30,8 +30,8 @@ if st.button("Analyze Sentiment"):
 
         # Fetch tweets and reddit posts (expecting list of (text, timestamp))
         tweets = get_tweets(keyword, count=10)
-        reddit_posts = get_reddit_posts(keyword, limit=10)
-        news_articles= get_news_articles(keyword, limit=10)
+        reddit_posts = get_reddit_posts(keyword, limit=50)
+        news_articles= get_news_articles(keyword, limit=50)
 
         st.write(f"✅ Tweets fetched: {len(tweets)}")
         st.write(f"✅ Reddit posts fetched: {len(reddit_posts)}")
