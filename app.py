@@ -10,14 +10,15 @@ import plotly.express as px
 st.set_page_config(page_title="Sentilytics", layout="wide")
 
 # --- UI Header ---
-st.title("📈 Real-Time Social Sentiment Scanner")
+st.title("🧠 Sentilytics — Real-Time Social Sentiment")
+st.markdown("Track what Twitter and Reddit think about any topic — from stocks to trends to public figures.")
 
 # --- Keyword Input ---
 col1, col2 = st.columns([3, 1])
 with col1:
-    keyword = st.text_input("Enter a stock/company/crypto keyword:", "Adani")
+    keyword = st.text_input("Enter a topic, stock, person, or trend:", "Adani")
 with col2:
-    suggested = st.selectbox("Or try a trending one:", ["Adani", "Tesla", "Nvidia", "Tata", "Apple", "Bitcoin"])
+    suggested = st.selectbox("Or try a popular one:", ["Adani", "Tesla", "Bitcoin", "Modi", "Israel", "Elon Musk"])
 
 if not keyword:
     keyword = suggested
@@ -51,8 +52,8 @@ if st.button("Analyze Sentiment"):
 
         if not data:
             st.info("⚠️ No live sentiment found. Showing demo data.")
-            data.append(["Twitter", datetime.now(), f"{keyword} stock is going crazy", 0.65])
-            data.append(["Reddit", datetime.now(), f"People hate {keyword} today", -0.72])
+            data.append(["Twitter", datetime.now(), f"{keyword} is trending heavily today", 0.65])
+            data.append(["Reddit", datetime.now(), f"People are debating about {keyword} everywhere", -0.72])
 
         df = pd.DataFrame(data, columns=["Platform", "Timestamp", "Text", "Sentiment"])
         df.sort_values("Timestamp", inplace=True)
