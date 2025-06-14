@@ -6,6 +6,7 @@ import streamlit as st
 
 load_dotenv()
 
+# Initialize Reddit API using secrets
 reddit = praw.Reddit(
     client_id=st.secrets["REDDIT_CLIENT_ID"],
     client_secret=st.secrets["REDDIT_CLIENT_SECRET"],
@@ -14,23 +15,26 @@ reddit = praw.Reddit(
 
 def get_reddit_posts(keyword, limit=20):
     try:
-       subreddits = [
-    "stocks", "investing", "wallstreetbets", "finance", "economy", "StockMarket",
-    "personalfinance", "ValueInvesting", "FinancialPlanning",
-    "IndiaInvestments", "IndianEconomy", "business", "Entrepreneur",
-    "startups", "macroeconomics", "cryptocurrency", "CryptoMarkets",
-    "technology", "Futurology"
-]
+        subreddits = [
+            "stocks", "investing", "wallstreetbets", "finance", "economy", "StockMarket",
+            "personalfinance", "ValueInvesting", "FinancialPlanning",
+            "IndiaInvestments", "IndianEconomy", "business", "Entrepreneur",
+            "startups", "macroeconomics", "cryptocurrency", "CryptoMarkets",
+            "technology", "Futurology"
+        ]
 
         results = []
-        per_sub_limit = max(2, limit // len(subreddits))  # ensure at least 1 per subreddit
+        per_sub_limit = max(2, limit // len(subreddits))
 
         for sub in subreddits:
-            posts = reddit.subreddit(sub).search(keyword, sort='new', limit=per_sub_limit)
-            for post in posts:
-                text = post.title + " " + post.selftext
-                timestamp = datetime.fromtimestamp(post.created_utc).replace(tzinfo=None)
-                results.append((text, timestamp))
+            try:
+                posts = reddit.subreddit(sub).search(keyword, sort='new', limit=per_sub_limit)
+                for post in posts:
+                    text = f"[r/{sub}] {post.title} {post.selftext}"
+                    timestamp = datetime.fromtimestamp(post.created_utc).replace(tzinfo=None)
+                    results.append((text, timestamp))
+            except Exception as sub_err:
+                st.warning(f"⚠️ Skipped r/{sub}: {str(sub_err)}")
 
         return results
 
