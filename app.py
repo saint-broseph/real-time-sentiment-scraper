@@ -11,7 +11,7 @@ import plotly.express as px
 st.set_page_config(page_title="Sentilytics", layout="wide")
 
 # --- UI Header ---
-st.title("🧠 Sentilytics — Real-Time Social Sentiment")
+st.title("🧠 Sentilytics — Cross-Platform Sentiment Tracker")
 st.markdown("Track what Twitter, Reddit, and News outlets think about any topic — from stocks to trends to public figures.")
 
 # --- Keyword Input ---
