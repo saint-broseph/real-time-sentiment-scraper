@@ -52,7 +52,7 @@ if st.button("Analyze Sentiment"):
                 data.append(["Reddit", ts, text, score])
         else:
             st.warning("⚠️ No Reddit posts found.")
-    if news_articles:
+        if news_articles:
             for text, ts in news_articles:
                 score = analyze_sentiment(text)
                 data.append(["News", ts, text, score])
