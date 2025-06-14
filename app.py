@@ -64,6 +64,9 @@ if st.button("Analyze Sentiment"):
             data.append(["Reddit", datetime.now(), f"People are debating about {keyword} everywhere", -0.72],
                        ["News", now, f"{keyword} is making headlines", 0.10],)
 
+        for i in range(len(data)):
+            data[i][1] = data[i][1].replace(tzinfo=None)
+            
         df = pd.DataFrame(data, columns=["Platform", "Timestamp", "Text", "Sentiment"])
         df.sort_values("Timestamp", inplace=True)
 
