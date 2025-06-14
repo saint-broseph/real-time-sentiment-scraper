@@ -17,12 +17,8 @@ st.markdown("Track what Twitter, Reddit, and News outlets think about any topic 
 # --- Keyword Input ---
 col1, col2 = st.columns([3, 1])
 with col1:
-    keyword = st.text_input("Enter a topic, stock, person, or trend:", "Adani")
-with col2:
-    suggested = st.selectbox("Or try a popular one:", ["Adani", "Tesla", "Bitcoin", "Modi", "Israel", "Elon Musk"])
+    keyword = st.text_input("Enter a topic, stock, person, or trend:")
 
-if not keyword:
-    keyword = suggested
 
 # --- Main button ---
 if st.button("Analyze Sentiment"):
