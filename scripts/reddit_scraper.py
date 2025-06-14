@@ -14,9 +14,14 @@ reddit = praw.Reddit(
 
 def get_reddit_posts(keyword, limit=20):
     try:
-        subreddits = ["stocks", "investing", "wallstreetbets", "finance", "economy", "StockMarket",
-    "personalfinance", "ValueInvesting", "FinancialPlanning", "IndiaInvestments", "IndianStockMarket", "IndianEconomy", "IndiaNews",
-    "bangalore", "delhi", "mumbai", "india",  "business", "Entrepreneur", "startups", "macroeconomics", "economic_policy"]
+       subreddits = [
+    "stocks", "investing", "wallstreetbets", "finance", "economy", "StockMarket",
+    "personalfinance", "ValueInvesting", "FinancialPlanning",
+    "IndiaInvestments", "IndianEconomy", "business", "Entrepreneur",
+    "startups", "macroeconomics", "cryptocurrency", "CryptoMarkets",
+    "technology", "Futurology"
+]
+
         results = []
         per_sub_limit = max(2, limit // len(subreddits))  # ensure at least 1 per subreddit
 
