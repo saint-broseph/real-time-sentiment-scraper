@@ -17,8 +17,11 @@ def get_tweets(keyword, count=10):
             max_results=min(count, 10),
             tweet_fields=["created_at"]
         )
-        return [t.text for t in response.data] if response.data else []
+        return [(t.text, t.created_at) for t in response.data] if response.data else []
     except tweepy.TooManyRequests:
         print("⚠️ Twitter rate limit reached. Sleeping for 60 seconds...")
         time.sleep(60)
-        return get_tweets(keyword, count)  # retry once
+        return get_tweets(keyword, count)
+    except Exception as e:
+        print("❌ Twitter error:", str(e))
+        return []
