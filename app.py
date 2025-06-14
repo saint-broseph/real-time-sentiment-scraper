@@ -1,10 +1,10 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from scripts.twitter_scraper import get_tweets
 from scripts.reddit_scraper import get_reddit_posts
 from scripts.news_scraper import get_news_articles
 from scripts.sentiment import analyze_sentiment
+from scripts.twitter_scraper import get_tweets
 import plotly.express as px
 
 # --- App Config ---
@@ -61,8 +61,8 @@ if st.button("Analyze Sentiment"):
         if not data:
             st.info("⚠️ No live sentiment found. Showing demo data.")
             data.append(["Twitter", datetime.now(), f"{keyword} is trending heavily today", 0.65])
-            data.append(["Reddit", datetime.now(), f"People are debating about {keyword} everywhere", -0.72],
-                       ["News", now, f"{keyword} is making headlines", 0.10],)
+            data.append(["Reddit", datetime.now(), f"People are debating about {keyword} everywhere", -0.72])
+            data.append(["News", datetime.now(), f"{keyword} is making headlines", 0.10])
 
         for i in range(len(data)):
             data[i][1] = data[i][1].replace(tzinfo=None)
