@@ -17,19 +17,16 @@ st.set_page_config(
 # --- Custom CSS ---
 st.markdown("""
 <style>
-/* Dark background styling */
 [data-testid="stAppViewContainer"] {
     background-color: #0f1117;
     color: #f5f5f5;
 }
 
-/* Sidebar */
 [data-testid="stSidebar"] {
     background-color: #1c1c1c;
     box-shadow: 4px 0 8px rgba(0, 0, 0, 0.5);
 }
 
-/* Header text */
 .header-text {
     font-size: 2.5rem;
     font-weight: 700;
@@ -37,7 +34,6 @@ st.markdown("""
     padding-bottom: 0.3em;
 }
 
-/* Box container */
 .block-container {
     background-color: #1e1e1e;
     padding: 2em;
@@ -46,7 +42,6 @@ st.markdown("""
     margin-top: 2em;
 }
 
-/* Divider line */
 hr {
     border: none;
     height: 2px;
@@ -73,43 +68,53 @@ if st.button("🚀 Analyze Now"):
         reddit_posts = get_reddit_posts(keyword, count)
 
         data = []
-        for text, ts in tweets:
-            score = analyze_sentiment(text)
-            data.append(["Twitter", ts, text, score])
 
-        for text, ts in reddit_posts:
-            score = analyze_sentiment(text)
-            data.append(["Reddit", ts, text, score])
-
-        df = pd.DataFrame(data, columns=["Platform", "Timestamp", "Text", "Sentiment"])
-        df.sort_values("Timestamp", inplace=True)
-
-    st.markdown('<div class="block-container">', unsafe_allow_html=True)
-    st.subheader("📊 Sentiment Table")
-
-    def color_sentiment(val):
-        if val > 0.2:
-            return 'background-color: #153d2e; color: #80ffb2'
-        elif val < -0.2:
-            return 'background-color: #3d1b1b; color: #ff9999'
+        if tweets:
+            for text, ts in tweets:
+                score = analyze_sentiment(text)
+                data.append(["Twitter", ts, text, score])
         else:
-            return 'background-color: #3d3d1b; color: #ffff99'
+            st.warning("⚠️ No tweets found for this keyword.")
 
-    st.dataframe(df.style.applymap(color_sentiment, subset=["Sentiment"]))
-    st.markdown('</div>', unsafe_allow_html=True)
+        if reddit_posts:
+            for text, ts in reddit_posts:
+                score = analyze_sentiment(text)
+                data.append(["Reddit", ts, text, score])
+        else:
+            st.warning("⚠️ No Reddit posts found for this keyword.")
 
-    # --- Plot ---
-    st.markdown('<div class="block-container">', unsafe_allow_html=True)
-    st.subheader("📈 Sentiment Over Time")
-    fig = px.line(
-        df,
-        x="Timestamp",
-        y="Sentiment",
-        color="Platform",
-        markers=True,
-        template="plotly_dark",
-        title=f"📉 {keyword} — Twitter vs Reddit Sentiment"
-    )
-    fig.update_traces(line=dict(width=3), marker=dict(size=8))
-    st.plotly_chart(fig, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+        if not data:
+            st.error("❌ No sentiment data available. Try a different keyword.")
+        else:
+            df = pd.DataFrame(data, columns=["Platform", "Timestamp", "Text", "Sentiment"])
+            df.sort_values("Timestamp", inplace=True)
+
+            st.markdown('<div class="block-container">', unsafe_allow_html=True)
+            st.subheader("📊 Sentiment Table")
+
+            def color_sentiment(val):
+                if val > 0.2:
+                    return 'background-color: #153d2e; color: #80ffb2'
+                elif val < -0.2:
+                    return 'background-color: #3d1b1b; color: #ff9999'
+                else:
+                    return 'background-color: #3d3d1b; color: #ffff99'
+
+            st.dataframe(df.style.applymap(color_sentiment, subset=["Sentiment"]))
+            st.markdown('</div>', unsafe_allow_html=True)
+
+            # --- Plot ---
+            st.markdown('<div class="block-container">', unsafe_allow_html=True)
+            st.subheader("📈 Sentiment Over Time")
+            fig = px.line(
+                df,
+                x="Timestamp",
+                y="Sentiment",
+                color="Platform",
+                markers=True,
+                template="plotly_dark",
+                title=f"📉 {keyword} — Twitter vs Reddit Sentiment"
+            )
+            fig.update_traces(line=dict(width=3), marker=dict(size=8))
+            st.plotly_chart(fig, use_container_width=True)
+            st.markdown('</div>', unsafe_allow_html=True)
