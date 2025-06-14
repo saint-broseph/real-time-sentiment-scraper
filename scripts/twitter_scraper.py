@@ -17,7 +17,7 @@ def get_tweets(keyword, count=10):
         if not response or not response.data:
             st.warning("⚠️ Twitter returned no data.")
             return []
-        return [(tweet.text, tweet.created_at) for tweet in response.data]
+        return [(tweet.text, tweet.created_at.replace(tzinfo=None) for tweet in response.data]
     except tweepy.TooManyRequests:
         st.warning("⚠️ Rate limit hit. Skipping Twitter.")
         return []
