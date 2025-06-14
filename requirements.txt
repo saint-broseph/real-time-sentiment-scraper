@@ -1,0 +1,8 @@
+#requirements.txt
+tweepy
+praw
+vaderSentiment
+pandas
+matplotlib
+python-dotenv
+streamlit
