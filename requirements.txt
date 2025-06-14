@@ -1,6 +1,0 @@
-1) tweepy
-2) praw
-3) vaderSentiment
-4) pandas
-5) matplotlib
-6) python-dotenv
