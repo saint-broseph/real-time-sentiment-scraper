@@ -11,7 +11,16 @@ st.set_page_config(page_title="Sentilytics", layout="wide")
 
 # --- UI Header ---
 st.title("📈 Real-Time Social Sentiment Scanner")
-keyword = st.text_input("Enter a stock/company/crypto keyword:", "Adani")
+
+# --- Keyword Input ---
+col1, col2 = st.columns([3, 1])
+with col1:
+    keyword = st.text_input("Enter a stock/company/crypto keyword:", "Adani")
+with col2:
+    suggested = st.selectbox("Or try a trending one:", ["Adani", "Tesla", "Nvidia", "Tata", "Apple", "Bitcoin"])
+
+if not keyword:
+    keyword = suggested
 
 # --- Main button ---
 if st.button("Analyze Sentiment"):
@@ -41,18 +50,19 @@ if st.button("Analyze Sentiment"):
             st.warning("⚠️ No Reddit posts found.")
 
         if not data:
-            st.error("❌ No data to analyze.")
-        else:
-            df = pd.DataFrame(data, columns=["Platform", "Timestamp", "Text", "Sentiment"])
-            df.sort_values("Timestamp", inplace=True)
+            st.info("⚠️ No live sentiment found. Showing demo data.")
+            data.append(["Twitter", datetime.now(), f"{keyword} stock is going crazy", 0.65])
+            data.append(["Reddit", datetime.now(), f"People hate {keyword} today", -0.72])
 
-            st.success("✅ Analysis complete!")
-            st.write("### Sentiment Data")
-            st.dataframe(df)
+        df = pd.DataFrame(data, columns=["Platform", "Timestamp", "Text", "Sentiment"])
+        df.sort_values("Timestamp", inplace=True)
 
-            st.write("### 📈 Sentiment Over Time")
-            fig = px.line(df, x="Timestamp", y="Sentiment", color="Platform",
-                          markers=True, title=f"📊 Sentiment Trend for '{keyword}'",
-                          template="plotly_dark")
-            st.plotly_chart(fig, use_container_width=True)
+        st.success("✅ Analysis complete!")
+        st.write("### Sentiment Data")
+        st.dataframe(df)
 
+        st.write("### 📈 Sentiment Over Time")
+        fig = px.line(df, x="Timestamp", y="Sentiment", color="Platform",
+                      markers=True, title=f"📊 Sentiment Trend for '{keyword}'",
+                      template="plotly_dark")
+        st.plotly_chart(fig, use_container_width=True)
