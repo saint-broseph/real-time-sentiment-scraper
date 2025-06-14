@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import datetime
 from scripts.twitter_scraper import get_tweets
 from scripts.reddit_scraper import get_reddit_posts
+from scripts.news_scraper import get_news_articles
 from scripts.sentiment import analyze_sentiment
 import plotly.express as px
 
@@ -11,7 +12,7 @@ st.set_page_config(page_title="Sentilytics", layout="wide")
 
 # --- UI Header ---
 st.title("🧠 Sentilytics — Real-Time Social Sentiment")
-st.markdown("Track what Twitter and Reddit think about any topic — from stocks to trends to public figures.")
+st.markdown("Track what Twitter, Reddit, and News outlets think about any topic — from stocks to trends to public figures.")
 
 # --- Keyword Input ---
 col1, col2 = st.columns([3, 1])
@@ -25,14 +26,16 @@ if not keyword:
 
 # --- Main button ---
 if st.button("Analyze Sentiment"):
-    with st.spinner("🔍 Fetching Twitter & Reddit data..."):
+    with st.spinner("🔍 Fetching Twitter, Reddit and News data..."):
 
         # Fetch tweets and reddit posts (expecting list of (text, timestamp))
-        tweets = get_tweets(keyword, count=15)
-        reddit_posts = get_reddit_posts(keyword, limit=15)
+        tweets = get_tweets(keyword, count=10)
+        reddit_posts = get_reddit_posts(keyword, limit=10)
+        news_articles= get_news_articles(keyword, limit=10)
 
         st.write(f"✅ Tweets fetched: {len(tweets)}")
         st.write(f"✅ Reddit posts fetched: {len(reddit_posts)}")
+        st.write(f"✅ News articles fetched: {len(news_articles)}")
 
         data = []
 
@@ -49,11 +52,17 @@ if st.button("Analyze Sentiment"):
                 data.append(["Reddit", ts, text, score])
         else:
             st.warning("⚠️ No Reddit posts found.")
-
+    if news_articles:
+            for text, ts in news_articles:
+                score = analyze_sentiment(text)
+                data.append(["News", ts, text, score])
+        else:
+            st.warning("⚠️ No News articles found.")
         if not data:
             st.info("⚠️ No live sentiment found. Showing demo data.")
             data.append(["Twitter", datetime.now(), f"{keyword} is trending heavily today", 0.65])
-            data.append(["Reddit", datetime.now(), f"People are debating about {keyword} everywhere", -0.72])
+            data.append(["Reddit", datetime.now(), f"People are debating about {keyword} everywhere", -0.72],
+                       ["News", now, f"{keyword} is making headlines", 0.10],)
 
         df = pd.DataFrame(data, columns=["Platform", "Timestamp", "Text", "Sentiment"])
         df.sort_values("Timestamp", inplace=True)
