@@ -16,7 +16,7 @@ st.markdown("Track what Twitter, Reddit, and News outlets think about any topic 
 
 # --- Keyword Input ---
 
-    keyword = st.text_input("Enter a topic, stock, person, or trend:")
+keyword = st.text_input("Enter a topic, stock, person, or trend:")
 
 
 # --- Main button ---
