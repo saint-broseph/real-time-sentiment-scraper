@@ -8,3 +8,5 @@ python-dotenv
 streamlit
 plotly
 requests
+youtube-transcript-api
+youtube-search-python
