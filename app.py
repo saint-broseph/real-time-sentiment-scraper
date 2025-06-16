@@ -22,8 +22,8 @@ if st.button("Analyze Sentiment"):
     with st.spinner("🔍 Fetching data from Twitter, Reddit, News, and YouTube..."):
 
         tweets = get_tweets(keyword, count=10)
-        reddit_posts = get_reddit_posts(keyword, limit=200)
-        news_articles = get_news_articles(keyword, limit=200)
+        reddit_posts = get_reddit_posts(keyword, limit=80)
+        news_articles = get_news_articles(keyword, limit=80)
 
         st.write(f"✅ Tweets fetched: {len(tweets)}")
         st.write(f"✅ Reddit posts fetched: {len(reddit_posts)}")
